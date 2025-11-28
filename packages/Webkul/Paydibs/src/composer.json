@@ -1,0 +1,25 @@
+{
+    "name": "bagisto/laravel-paydibs",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "en.tan",
+            "email": "en.tan@alphawave-innovations.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Webkul\\Paydibs\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\Paydibs\\Providers\\PaydibsServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,11 @@
+{
+  "src/Resources/assets/css/mpdata.css": {
+    "file": "assets/mpdata-759d9a40.css",
+    "isEntry": true,
+    "src": "src/Resources/assets/css/mpdata.css"
+  },
+  "src/Resources/assets/fonts/icomoon.woff": {
+    "file": "assets/icomoon-88390312.woff",
+    "src": "src/Resources/assets/fonts/icomoon.woff"
+  }
+}

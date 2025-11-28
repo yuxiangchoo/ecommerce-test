@@ -1,0 +1,21 @@
+{
+  "name": "webkul/parcel-daily",
+  "description": "ParcelDaily integration for Bagisto",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Webkul\\ParcelDaily\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Webkul\\ParcelDaily\\Providers\\ParcelDailyServiceProvider"
+      ]
+    }
+  },
+  "require": {
+    "php": "^8.1"
+  },
+  "version": "dev-main"
+}

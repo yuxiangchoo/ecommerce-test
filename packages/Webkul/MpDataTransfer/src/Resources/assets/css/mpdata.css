@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "icomoon";
+    src: url("../fonts/icomoon.woff?al2rqs") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="mp-dt-"],
+[class*=" mp-dt-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: "icomoon" !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.mp-dt-icon-edit:before {
+    content: "\f904";
+}
+.mp-dt-icon-import:before {
+    content: "\f906";
+}
+.mp-dt-icon-data-transfer:before {
+    content: "\f907";
+}
+
+.primary-button {
+    @apply flex gap-x-1.5 items-center place-content-center font-medium rounded-xl text-white bg-navyBlue border border-navyBlue px-8 py-4 max-w-max cursor-pointer transition-all hover:opacity-[0.9];
+}
+
+.secondary-button {
+    @apply flex gap-x-1.5 items-center place-content-center font-medium rounded-xl bg-white text-navyBlue border border-navyBlue px-8 py-4 max-w-max cursor-pointer transition-all hover:bg-[#050e3a0d];
+}
+
+@media (prefers-color-scheme: dark) {
+    .dark\:bg-gray-900 {
+        --tw-bg-opacity: 1;
+        /* background-color: rgb(17 24 39 / var(--tw-bg-opacity)); */
+    }
+}

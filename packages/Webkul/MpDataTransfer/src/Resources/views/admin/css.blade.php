@@ -1,0 +1,1 @@
+@bagistoVite(['src/Resources/assets/css/mpdata.css'], 'mp_data_transfer')

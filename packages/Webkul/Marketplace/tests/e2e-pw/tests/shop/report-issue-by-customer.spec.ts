@@ -1,0 +1,191 @@
+import { test, expect } from '../../setup';
+import { sellerLogin, sellerRegister, sellerSimpleProduct, sellerApprove, sellerManageProfile } from '../../pages/seller';
+import {sellerFlagStatus} from '../../pages/mp-product-setting';
+import { loginAsCustomer } from '../../utils/customer';
+
+test('customer report issue to seller profile', async ({ adminPage }) => {
+
+    /**
+     * Navigate to Shop Front page
+     */
+    await adminPage.goto("");
+    await adminPage.click('(//a[@aria-label="Sell"])[1]');
+    await adminPage.click('//a[@class="primary-button flex items-center gap-2.5"]');
+
+    await adminPage.waitForSelector('//h1[contains(.," Become Seller ")]');
+
+    await sellerRegister(adminPage);
+    
+    await adminPage.locator('div.fixed.top-5 ').getByText('Your activation seeks admin approval').isVisible();
+
+    await adminPage.goto('admin/marketplace/sellers');
+
+    await sellerApprove(adminPage);
+    
+    await expect(adminPage.getByText('Seller updated successfully!')).toBeVisible();
+
+    await adminPage.goto('seller/login');
+
+    await sellerLogin(adminPage);
+
+    await expect(adminPage.locator('//h2[contains(.," Profile Score ")]')).toBeVisible();
+
+    /**
+     * Navigate to Manage Profile
+     */
+    await adminPage.click('//span[contains(.," Manage Profile ")]');
+    // await adminPage.waitForTimeout(2000); /* Wait for login to process */
+
+    await adminPage.click('//a[contains(.," Edit Profile ")]');
+    await adminPage.waitForURL('seller/profile/edit');
+
+    await sellerManageProfile(adminPage);
+    /**
+     * Check the Profile is updated successfully.
+     */
+
+    await expect(adminPage.locator('div.fixed.top-5')).toHaveText('Your Profile is updated successfully');    
+
+
+    await adminPage.goto('seller/products');
+ 
+    /**
+     * Click to the Add New Product button
+     */
+    await adminPage.click('//a[contains(.,"Add New Product")]');
+
+    await adminPage.waitForURL('seller/products/create');
+
+    await sellerSimpleProduct(adminPage);
+
+    await expect(adminPage.locator('div.fixed.top-5')).toHaveText('Product updated successfully');
+    
+    await adminPage.goto('admin/marketplace/products');
+    await adminPage.locator('label.icon-uncheckbox').nth(0).click();
+    await adminPage.click('//span[contains(.," Select Action ")]');
+    const update_product_status = adminPage.locator('//span[contains(.,"Update Status")]');
+    await update_product_status.hover();
+    await adminPage.click('//a[contains(.,"Approved")]');
+    await adminPage.click('//button[contains(.,"Agree")]');
+    await expect(adminPage.locator('div.fixed.top-5')).toHaveText('Product Updated successfully. Close ');
+
+    await adminPage.goto('customer/register');
+    
+    /**
+     * Register as a customer
+     */
+
+    await loginAsCustomer(adminPage);
+    // await adminPage.waitForURL('customer/login');
+
+    await adminPage.waitForURL('');
+
+
+    await adminPage.goto('admin/configuration/marketplace/settings')
+    await sellerFlagStatus(adminPage);
+
+    await adminPage.click('(//span[contains(.," Report Issue ")])[1]');
+
+    await adminPage.waitForSelector('(//button[contains(.,"Submit")])[2]');
+    
+    
+    // await adminPage.click('//span[@class="flex cursor-pointer items-center gap-2.5"]');
+
+    // await adminPage.waitForSelector('//button[contains(.,"Submit")]');
+
+    await adminPage.selectOption('select[name="reason"]', {value: 'Duplicate product sold by seller'});
+
+    await adminPage.click('(//button[contains(.,"Submit")])[2]');
+
+    await expect(
+        adminPage.getByText("You cannot report this seller without placing an order").first()
+    ).toBeVisible();
+
+
+    await adminPage.getByRole('button', { name: 'Add To Cart' }).first().click();
+
+    /**
+     * Add the product to the cart 
+     */
+    await adminPage.locator("span.icon-cart").first().click();
+        
+    // /**
+    //  * Open the shopping cart 
+    //  */
+    // await adminPage.locator("(//span[@role='button' and contains(@class, 'icon-cart') and @tabindex='0'])[1]").click();
+    
+    /**
+     * Continue to checkout 
+     */
+    await adminPage.locator('(//a[contains(., " Continue to Checkout ")])[1]').click();
+
+    await adminPage.waitForURL('checkout/onepage');
+
+    /**
+     * Fill in the shipping address details
+     */
+    await adminPage.getByRole('textbox', { name: 'Company Name' }).fill('webkul');
+    await adminPage.getByRole('textbox', { name: 'First Name' }).fill('webkul');
+    await adminPage.getByRole('textbox', { name: 'Last Name' }).fill('webkul');
+    await adminPage.getByRole('textbox', { name: 'email@example.com' }).fill('webkul@example.com');
+    await adminPage.getByRole('textbox', { name: 'Street Address' }).fill('noida');
+    await adminPage.locator('select[name="billing\\.country"]').selectOption('IN'); // Country: India
+    await adminPage.locator('select[name="billing\\.state"]').selectOption('UP');   // State: UP
+    await adminPage.getByRole('textbox', { name: 'City' }).fill('noida');
+    await adminPage.getByRole('textbox', { name: 'Zip/Postcode' }).fill('251664');
+    await adminPage.getByRole('textbox', { name: 'Telephone' }).fill('154895584');
+    
+    /**
+     * click on save button
+     */
+    await adminPage.click('//button[contains(., "Save")]');
+
+
+    /**
+     * Proceed with the checkout
+     */   
+    await adminPage.getByRole('button', { name: 'Proceed' }).click();
+    
+    /**
+     * Select the shipping method 
+     */ 
+    await adminPage.locator('div:nth-child(2) > .icon-radio-unselect').click();
+    
+    /**
+     * Choose the payment method
+     */
+    await adminPage.click('//img[@title="Cash On Delivery"]');
+
+    /**
+     * Place the order
+     */
+    await adminPage.getByRole('button', { name: 'Place Order' }).click();
+
+    await adminPage.waitForSelector('//p[@class="font-medium md:text-2xl"]');
+
+    /**
+     * Checked that After completed the Order display the locator
+     */
+    await expect(adminPage.locator('//p[@class="font-medium md:text-2xl"]')).toBeVisible();
+
+    await adminPage.goto('admin/configuration/marketplace/settings')
+    await sellerFlagStatus(adminPage);
+
+    await adminPage.click('(//span[contains(.," Report Issue ")])[1]');
+
+    await adminPage.waitForSelector('(//button[contains(.,"Submit")])[2]');
+    
+    
+    // await adminPage.click('//span[@class="flex cursor-pointer items-center gap-2.5"]');
+
+    // await adminPage.waitForSelector('//button[contains(.,"Submit")]');
+
+    await adminPage.selectOption('select[name="reason"]', {value: 'Duplicate product sold by seller'});
+
+    await adminPage.click('(//button[contains(.,"Submit")])[2]');
+
+    await expect(
+        adminPage.getByText("Seller reported successfully").first()
+    ).toBeVisible();
+
+});

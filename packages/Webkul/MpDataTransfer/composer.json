@@ -1,0 +1,26 @@
+{
+    "name": "bagisto/laravel-mp-data-transfer",
+    "license": "MIT",
+    "description" : "Marketplace Data Transfer package",
+    "authors": [
+        {
+            "name": "Bagisto",
+            "email": "support@bagisto.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Webkul\\MpDataTransfer\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\MpDataTransfer\\Providers\\MpDataTransferServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

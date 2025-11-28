@@ -1,0 +1,23 @@
+{
+  "name": "webkul/sms",
+  "description": "Driver-based SMS provider for Bagisto",
+  "type": "library",
+  "license": "MIT",
+  "autoload": { "psr-4": { "Webkul\\Sms\\": "src/" } },
+  "extra": {
+    "laravel": {
+    "providers": [
+      "Webkul\\Sms\\Providers\\SmsServiceProvider"
+    ],
+      "aliases":   { "Sms": "Webkul\\Sms\\Facades\\Sms" }
+    }
+  },
+  "require": {
+    "php": "^8.1|^8.2|^8.3",
+    "illuminate/support": "^10.0|^11.0",
+    "illuminate/notifications": "^10.0|^11.0",
+    "guzzlehttp/guzzle": "^7.0"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
