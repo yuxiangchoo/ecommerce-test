@@ -20,6 +20,7 @@ class ProductResource extends JsonResource
             'sku'                 => $this->sku,
             'name'                => $this->name,
             'price'               => $this->price,
+            'point_cost'          => (int) $this->point_cost,
             'formatted_price'     => core()->formatPrice($this->price),
             'images'              => $this->images,
             'inventories'         => $this->inventories,

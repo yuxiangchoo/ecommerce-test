@@ -38,6 +38,7 @@ class ProductResource extends JsonResource
             'url_key'     => $this->url_key,
             'base_image'  => product_image()->getProductBaseImage($this),
             'images'      => product_image()->getGalleryImages($this),
+            'point_cost'  => (int) $this->point_cost,
             'is_new'      => (bool) $this->new,
             'is_featured' => (bool) $this->featured,
             'on_sale'     => (bool) $productTypeInstance->haveDiscount(),
